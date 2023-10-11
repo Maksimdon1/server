@@ -535,20 +535,17 @@ app.post("/create-house", async (req, res) => {
     }
 });
 
-app.post("/test", async (req, res) => {
-  const data = req.body
-  console.log(data)
-  res.status(200).send('work')
-});
+
 app.get("/all", async (req, res) => {
   var sql = "SELECT * FROM Users";
-  await db.all(sql, (err, result) => {
+   db.all(sql, (err, result) => {
     if (err) {
       res.status(402).json({ error: err.message });
       
       return;
     }
     else{
+      console.log(result)
       res.status(200).send(result)
     }
 
