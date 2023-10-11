@@ -53,9 +53,10 @@ app.use(
   function (request, response, next) {
   express.urlencoded({limit: '50mb', extended: true}),
   express.urlencoded(),
+  
   cors({
-    origin: ["http://localhost:3000", "https://flower-lower.netlify.app", "http://u155410.test-handyhost.ru"],
-   
+    origin: "https://flower-lower.netlify.app",
+
   })
 }
 );
