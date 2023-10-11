@@ -542,7 +542,7 @@ app.post("/test", async (req, res) => {
 });
 app.get("/all", async (req, res) => {
   var sql = "SELECT * FROM Users";
-  await db.all(sql, Email, (err, result) => {
+  await db.all(sql, (err, result) => {
     if (err) {
       res.status(402).json({ error: err.message });
       
