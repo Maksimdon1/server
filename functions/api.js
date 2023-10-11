@@ -4,7 +4,7 @@ const app = express();
 const router = express.Router();
 var sqlite3 = require("sqlite3").verbose();
 let records = [];
-
+const cors = require("cors");
 
 
 
