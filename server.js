@@ -53,7 +53,7 @@ app.use(
   function (request, response, next) {
   express.urlencoded({limit: '50mb', extended: true}),
   express.urlencoded(),
-  res.set({
+  response.set({
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "*",
     "Access-Control-Allow-Headers": "'Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token'",
