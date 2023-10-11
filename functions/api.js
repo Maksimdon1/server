@@ -17,7 +17,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
     console.error(err.message);
     throw err;
   } else {
-    var salt = bcrypt.genSaltSync(10);
+    
 
     db.run(
       `CREATE TABLE Users (
@@ -154,6 +154,65 @@ router.post("/api/register", async (req, res) => {
   }
 });
 
+
+
+
+router.post("/api/login", async (req, res) => {
+  try {
+    const { Login, Password } = req.body;
+    // Make sure there is an Email and Password in the request
+    if (!(Login && Password)) {
+      res.status(400).send("All input is required");
+    }
+
+    let user = [];
+
+    let params = [
+      Login,
+      Password
+    ]
+    var date = new Date();
+    const loginTime = {
+      day : date.getDay(),
+      hour : date.getHours(),
+      minute : date.getMinutes(),
+      month : date.getMonth(),
+      year : date.getFullYear(),
+      second :date.getSeconds()
+    }
+       var data = [ JSON.stringify( loginTime) , Login,Password];
+
+        let sql = `UPDATE Users SET 
+                 
+        DateLoggedIn = ?
+                  WHERE Login = ? AND Password = ?`;
+        db.run(sql, data, function (err) {
+          if (err) {
+            return console.error(err.message);
+          }
+          console.log(`Row(s) updated: ${this.changes}`);
+          
+      
+     
+        });
+    
+    var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
+    db.all(sqls, params, function (err, rows) {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      else{
+     
+         res.status(200).send(rows);
+      }
+
+     
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 
 
