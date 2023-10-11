@@ -53,10 +53,6 @@ app.use(
   function (request, response, next) {
   express.urlencoded({limit: '50mb', extended: true}),
   express.urlencoded(),
-  response.set({
-    "Access-Control-Allow-Origin": "*",
-
-});
   cors({
     origin: ["http://localhost:3000", "https://flower-lower.netlify.app", "http://u155410.test-handyhost.ru"],
    
