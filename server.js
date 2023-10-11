@@ -58,6 +58,7 @@ app.use(
 
 });
   cors({
+    origin: ["http://localhost:3000", "https://flower-lower.netlify.app", "http://u155410.test-handyhost.ru"],
    
   })
 }
