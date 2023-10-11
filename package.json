@@ -4,18 +4,17 @@
   "description": "Express Hello World on Render",
   "main": "server.js",
   "repository": "https://github.com/render-examples/express-hello-world",
-  "author": "Render Developers",
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "private": false,
   "scripts": {
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "md5": "^2.3.0",
     "netlify-cli": "^12.7.2",
     "netlify-lambda": "^2.0.15",
     "sqlite3": "^5.1.6"
