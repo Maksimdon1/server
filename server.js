@@ -540,14 +540,21 @@ app.post("/test", async (req, res) => {
   console.log(data)
   res.status(200).send('work')
 });
-app.get("/get", async (req, res) => {
- const val = {
-  'first' : 250,
-  'second' : 250,
-  'three': 255,
+app.get("/all", async (req, res) => {
+  var sql = "SELECT * FROM Users";
+  await db.all(sql, Email, (err, result) => {
+    if (err) {
+      res.status(402).json({ error: err.message });
+      
+      return;
+    }
+    else{
+      res.status(200).send(result)
+    }
 
-}
-res.status(200).send(val)
+})
+
+
 });
 
 
