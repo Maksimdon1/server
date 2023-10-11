@@ -5,7 +5,6 @@ const port = process.env.PORT || 3001;
 var md5 = require("md5");
 var sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
-
 var bcrypt = require("bcryptjs");
 const DBSOURCE = "shop.sqlite";
 
