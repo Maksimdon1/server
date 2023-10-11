@@ -1,61 +1,557 @@
 const express = require("express");
 const app = express();
+require("dotenv").config();
 const port = process.env.PORT || 3001;
+var md5 = require("md5");
+var sqlite3 = require("sqlite3").verbose();
+const cors = require("cors");
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
+const DBSOURCE = "shop.sqlite";
 
-app.get("/", (req, res) => res.type('html').send(html));
 
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+let db = new sqlite3.Database(DBSOURCE, (err) => {
+  if (err) {
+    // Cannot open database
+    console.error(err.message);
+    throw err;
+  } else {
+    var salt = bcrypt.genSaltSync(10);
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
+    db.run(
+      `CREATE TABLE Users (
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            Login text, 
+            Email text, 
+            Password text,             
+            Name text,
+            Surname text,
+            Token text,
+            SysLevel  INTEGER,
 
-const html = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello from Render!</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-      setTimeout(() => {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          disableForReducedMotion: true
+            DateLoggedIn DATE,
+            DateCreated DATE
+            
+
+            )`,
+      (err) => {
+        if (err) {
+          // Table already created
+        } else {
+          // Table just created, creating some rows
+          var insert =
+            "INSERT INTO Users (Login, Email, Password, Salt, DateCreated) VALUES (?,?,?,?,?)";
+         
+        }
+      }
+    );
+  }
+});
+
+module.exports = db;
+
+app.use(
+  express.urlencoded({limit: '50mb', extended: true}),
+  express.urlencoded(),
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
+
+app.post("/api/register", async (req, res) => {
+  var errors = [];
+  var data = [];
+  try {
+    const { Login, Email, Password, Name, Surname,Token, SysLevel} = req.body;
+
+    if (!Login) {
+      errors.push("Login is missing");
+    }
+    if (!Token) {
+      errors.push("Login is missing");
+    }
+    if (!Name) {
+      errors.push("Name is missing");
+    }
+    if (!Surname) {
+      errors.push("Surname is missing");
+    }
+    if (!Email) {
+      errors.push("Email is missing");
+    }
+    if (errors.length) {
+      res.status(400).json({ error: errors.join(",") });
+      return;
+    }
+    let userExists = false;
+
+    var sql = "SELECT * FROM Users WHERE Email = ?";
+    await db.all(sql, Email, (err, result) => {
+      if (err) {
+        res.status(402).json({ error: err.message });
+        return;
+      }
+
+      if (result.length === 0) {
+        
+
+        data = {
+          
+          Login: Login,
+          Email: Email,
+          Password: Password,
+          Token : Token,
+          DateCreated: Date("now"),
+          Name : Name,
+          Surname : Surname,
+          SysLevel : SysLevel
+        };
+
+        var sql =
+          "INSERT INTO Users (Login, Email, Password, Token, DateCreated, Name , Surname, SysLevel) VALUES (?,?,?,?,?,?,?,?)";
+        var params = [
+          data.Login,
+          data.Email,
+          data.Password,
+          data.Token,
+          Date("now"),
+          data.Name,
+          data.Surname,
+          data.SysLevel
+        ];
+        var user = db.run(sql, params, function (err, innerResult) {
+          if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+          }
         });
-      }, 500);
-    </script>
-    <style>
-      @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
-      @font-face {
-        font-family: "neo-sans";
-        src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
-        font-style: normal;
-        font-weight: 700;
+      } else {
+        userExists = true;
+        // res.status(404).send("User Already Exist. Please Login");
       }
-      html {
-        font-family: neo-sans;
-        font-weight: 700;
-        font-size: calc(62rem / 16);
+    });
+
+    setTimeout(() => {
+      if (!userExists) {
+        res.status(201).send(data);
+      } else {
+        res.status(201).json("Record already exists. Please login");
       }
-      body {
-        background: white;
+    }, 500);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+app.post("/api/login", async (req, res) => {
+  try {
+    const { Login, Password } = req.body;
+    // Make sure there is an Email and Password in the request
+    if (!(Login && Password)) {
+      res.status(400).send("All input is required");
+    }
+
+    let user = [];
+
+    let params = [
+      Login,
+      Password
+    ]
+    var date = new Date();
+    const loginTime = {
+      day : date.getDay(),
+      hour : date.getHours(),
+      minute : date.getMinutes(),
+      month : date.getMonth(),
+      year : date.getFullYear(),
+      second :date.getSeconds()
+    }
+       var data = [ JSON.stringify( loginTime) , Login,Password];
+
+        let sql = `UPDATE Users SET 
+                 
+        DateLoggedIn = ?
+                  WHERE Login = ? AND Password = ?`;
+        db.run(sql, data, function (err) {
+          if (err) {
+            return console.error(err.message);
+          }
+          console.log(`Row(s) updated: ${this.changes}`);
+          
+      
+     
+        });
+    
+    var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
+    db.all(sqls, params, function (err, rows) {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
       }
-      section {
-        border-radius: 1em;
-        padding: 1em;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%);
+      else{
+     
+         res.status(200).send(rows);
       }
-    </style>
-  </head>
-  <body>
-    <section>
-      Hello from Render!
-    </section>
-  </body>
-</html>
-`
+
+     
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/get-repair-list", async (req, res) => {
+  try {
+    const { Login, Password } = req.body;
+    // Make sure there is an Email and Password in the request
+    if (!(Login && Password)) {
+      res.status(400).send("All input is required");
+    }
+
+    let user = [];
+
+    let params = [
+      Login,
+      Password
+    ]
+    var date = new Date();
+    const loginTime = {
+      day : date.getDay(),
+      hour : date.getHours(),
+      minute : date.getMinutes(),
+      month : date.getMonth(),
+      year : date.getFullYear(),
+      second :date.getSeconds()
+    }
+    var data = [ JSON.stringify( loginTime) , Login,Password];
+
+        let sql = `UPDATE Users SET 
+                 
+        DateLoggedIn = ?
+                  WHERE Login = ? AND Password = ?`;
+        db.run(sql, data, function (err) {
+          if (err) {
+            return console.error(err.message);
+          }
+          console.log(`Row(s) updated: ${this.changes}`);
+          
+      
+     
+        });
+    
+    var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
+    db.all(sqls, params, function (err, rows) {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      else{
+        if(rows){
+          var sql = "SELECT * FROM Entrance  WHERE Repair = ?";
+          db.all(sql, true, function (err, rows) {
+            res.status(200).send(rows);
+          })
+          
+        }
+     
+         
+      }
+
+     
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+app.post("/get-all-entrance", async (req, res) => {
+  try {
+    const { Login, Password } = req.body;
+    // Make sure there is an Email and Password in the request
+    if (!(Login && Password)) {
+      res.status(400).send("All input is required");
+    }
+
+    let user = [];
+
+    let params = [
+      Login,
+      Password
+    ]
+    var date = new Date();
+    const loginTime = {
+      day : date.getDay(),
+      hour : date.getHours(),
+      minute : date.getMinutes(),
+      month : date.getMonth(),
+      year : date.getFullYear(),
+      second :date.getSeconds()
+    }
+    var data = [ JSON.stringify( loginTime) , Login,Password];
+
+        let sql = `UPDATE Users SET 
+                 
+        DateLoggedIn = ?
+                  WHERE Login = ? AND Password = ?`;
+        db.run(sql, data, function (err) {
+          if (err) {
+            return console.error(err.message);
+          }
+          console.log(`Row(s) updated: ${this.changes}`);
+          
+      
+     
+        });
+    
+    var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
+    db.all(sqls, params, function (err, rows) {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      else{
+        if(rows){
+          var sql = "SELECT * FROM Entrance";
+          db.all(sql,  function (err, rows) {
+            res.status(200).send(rows);
+          })
+          
+        }
+     
+         
+      }
+
+     
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/set-entrance-repair-state", async (req, res) => {
+  try {
+    const { Login, Password,  EntranceId, EntranceState } = req.body;
+    // Make sure there is an Email and Password in the request
+    if (!(Login && Password && EntranceId && EntranceState)) {
+      res.status(400).send("All input is required");
+    }
+    console.log( EntranceId, EntranceState)
+      let user = [];
+  
+      let params = [
+        Login,
+        Password
+      ]
+      var date = new Date();
+      const loginTime = {
+        day : date.getDay(),
+        hour : date.getHours(),
+        minute : date.getMinutes(),
+        month : date.getMonth(),
+        year : date.getFullYear(),
+        second :date.getSeconds()
+      }
+      var data = [ JSON.stringify( loginTime) , Login,Password];
+  
+          let sql = `UPDATE Users SET 
+                   
+          DateLoggedIn = ?
+                    WHERE Login = ? AND Password = ?`;
+          db.run(sql, data, function (err) {
+            if (err) {
+              return console.error(err.message);
+            }
+            console.log(`Row(s) updated: ${this.changes}`);
+            
+        
+       
+          });
+      
+      var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
+      db.all(sqls, params, function (err, rows) {
+        if (err) {
+          res.status(400).json({ error: err.message });
+          return;
+        }
+        else{
+         
+           
+            var sql = "UPDATE Entrance SET Repair = ? WHERE Id = ?";
+            db.all(sql, EntranceState, EntranceId, function (err, rows) {
+              res.status(200).send(rows);
+              if (err) {
+                res.status(400).json({ error: err.message });
+                return;
+              }
+            })
+            
+          
+       
+           
+        }
+  
+       
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  app.post("/set-entrance-state", async (req, res) => {
+    try {
+      const { Login, Password,  EntranceId, EntranceState } = req.body;
+      // Make sure there is an Email and Password in the request
+      if (!(Login && Password && EntranceId && EntranceState)) {
+        res.status(400).send("All input is required");
+      }
+      console.log( EntranceId, EntranceState)
+        let user = [];
+    
+        let params = [
+          Login,
+          Password
+        ]
+        var date = new Date();
+        const loginTime = {
+          day : date.getDay(),
+          hour : date.getHours(),
+          minute : date.getMinutes(),
+          month : date.getMonth(),
+          year : date.getFullYear(),
+          second :date.getSeconds()
+        }
+        var data = [ JSON.stringify( loginTime) , Login,Password];
+    
+            let sql = `UPDATE Users SET 
+                     
+            DateLoggedIn = ?
+                      WHERE Login = ? AND Password = ?`;
+            db.run(sql, data, function (err) {
+              if (err) {
+                return console.error(err.message);
+              }
+              console.log(`Row(s) updated: ${this.changes}`);
+              
+          
+         
+            });
+        
+        var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
+        db.all(sqls, params, function (err, rows) {
+          if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+          }
+          else{
+           
+             
+              var sql = "UPDATE Entrance SET State = ? WHERE Id = ?";
+              db.all(sql, EntranceState, EntranceId, function (err, rows) {
+                res.status(200).send(rows);
+                if (err) {
+                  res.status(400).json({ error: err.message });
+                  return;
+                }
+              })
+              
+            
+         
+             
+          }
+    
+         
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    });
+app.post("/create-house", async (req, res) => {
+  try {
+    const { Login, Password,  EntranceId, EntranceState } = req.body;
+    // Make sure there is an Email and Password in the request
+    if (!(Login && Password && EntranceId && EntranceState)) {
+      res.status(400).send("All input is required");
+    }
+    console.log( EntranceId, EntranceState)
+      let user = [];
+  
+      let params = [
+        Login,
+        Password
+      ]
+      var date = new Date();
+      const loginTime = {
+        day : date.getDay(),
+        hour : date.getHours(),
+        minute : date.getMinutes(),
+        month : date.getMonth(),
+        year : date.getFullYear(),
+        second :date.getSeconds()
+      }
+      var data = [ JSON.stringify( loginTime) , Login,Password];
+  
+          let sql = `UPDATE Users SET 
+                   
+          DateLoggedIn = ?
+                    WHERE Login = ? AND Password = ?`;
+          db.run(sql, data, function (err) {
+            if (err) {
+              return console.error(err.message);
+            }
+            console.log(`Row(s) updated: ${this.changes}`);
+            
+        
+       
+          });
+      
+      var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
+      db.all(sqls, params, function (err, rows) {
+        if (err) {
+          res.status(400).json({ error: err.message });
+          return;
+        }
+        else{
+         
+           
+            var sql = "UPDATE Entrance SET State = ? WHERE Id = ?";
+            db.all(sql, EntranceState, EntranceId, function (err, rows) {
+              res.status(200).send(rows);
+              if (err) {
+                res.status(400).json({ error: err.message });
+                return;
+              }
+            })
+            
+          
+       
+           
+        }
+  
+       
+      });
+    } catch (err) {
+      console.log(err);
+    }
+});
+
+app.post("/test", async (req, res) => {
+  const data = req.body
+  console.log(data)
+  res.status(200).send('work')
+});
+app.get("/get", async (req, res) => {
+ const val = {
+  'first' : 250,
+  'second' : 250,
+  'three': 255,
+
+}
+res.status(200).send(val)
+});
+
+
+app.listen(port, "0.0.0.0", () =>
+  console.log(`API listening on port ${port}!`)
+);
