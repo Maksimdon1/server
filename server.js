@@ -50,15 +50,11 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 module.exports = db;
 
 app.use(
-  function (request, response, next) {
   express.urlencoded({limit: '50mb', extended: true}),
   express.urlencoded(),
-  
   cors({
-  
-
+    origin: "http://localhost:3000",
   })
-}
 );
 
 app.post("/api/register", async (req, res) => {
