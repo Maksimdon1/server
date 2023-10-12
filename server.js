@@ -52,9 +52,7 @@ module.exports = db;
 app.use(
   express.urlencoded({limit: '50mb', extended: true}),
   express.urlencoded(),
-  cors({
-    origin: "http://localhost:3000",
-  })
+  cors()
 );
 
 app.post("/api/register", async (req, res) => {
