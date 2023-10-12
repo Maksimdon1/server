@@ -55,7 +55,7 @@ app.use(
   express.urlencoded(),
   
   cors({
-    origin: "https://flower-lower.netlify.app",
+  
 
   })
 }
