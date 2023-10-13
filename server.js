@@ -21,6 +21,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
       `CREATE TABLE Users (
             Id INTEGER PRIMARY KEY AUTOINCREMENT,
             Login text, 
+            Phone text
             Email text, 
             Password text,             
             Name text,
@@ -59,10 +60,13 @@ app.post("/api/register", async (req, res) => {
   var errors = [];
   var data = [];
   try {
-    const { Login, Email, Password, Name, Surname,Token, SysLevel} = req.body;
+    const { Login,Phome, Email, Password, Name, Surname,Token, SysLevel} = req.body;
 
     if (!Login) {
       errors.push("Login is missing");
+    }
+    if (!Phome) {
+      errors.push("Phome");
     }
     if (!Token) {
       errors.push("Login is missing");
@@ -95,6 +99,7 @@ app.post("/api/register", async (req, res) => {
         data = {
           
           Login: Login,
+          Phome : Phome,
           Email: Email,
           Password: Password,
           Token : Token,
@@ -105,11 +110,13 @@ app.post("/api/register", async (req, res) => {
         };
 
         var sql =
-          "INSERT INTO Users (Login, Email, Password, Token, DateCreated, Name , Surname, SysLevel) VALUES (?,?,?,?,?,?,?,?)";
+          "INSERT INTO Users (Login,Phome , Email, Password, Token, DateCreated, Name , Surname, SysLevel) VALUES (?,?,?,?,?,?,?,?,?)";
         var params = [
           data.Login,
+          data,Phome,
           data.Email,
           data.Password,
+
           data.Token,
           Date("now"),
           data.Name,
