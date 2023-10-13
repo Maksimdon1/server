@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3002;
 var md5 = require("md5");
 var sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
@@ -21,14 +21,13 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
       `CREATE TABLE Users (
             Id INTEGER PRIMARY KEY AUTOINCREMENT,
             Login text, 
-            Phone text
             Email text, 
+            Phone text,
             Password text,             
             Name text,
             Surname text,
             Token text,
             SysLevel  INTEGER,
-
             DateLoggedIn DATE,
             DateCreated DATE
             
@@ -51,24 +50,29 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 module.exports = db;
 
 app.use(
+
   express.urlencoded({limit: '50mb', extended: true}),
   express.urlencoded(),
-  cors()
+  
+  cors(
+
+  )
+
 );
 
 app.post("/api/register", async (req, res) => {
   var errors = [];
-  var data = [];
+  var data = {};
   try {
-    const { Login,Phome, Email, Password, Name, Surname,Token, SysLevel} = req.body;
+    const { Login, Email, Phone , Password, Name, Surname,Token, SysLevel} = req.body;
 
     if (!Login) {
       errors.push("Login is missing");
     }
-    if (!Phome) {
-      errors.push("Phome");
-    }
     if (!Token) {
+      errors.push("Login is missing");
+    }
+    if (!Phone) {
       errors.push("Login is missing");
     }
     if (!Name) {
@@ -99,8 +103,8 @@ app.post("/api/register", async (req, res) => {
         data = {
           
           Login: Login,
-          Phome : Phome,
           Email: Email,
+          Phone: Phone,
           Password: Password,
           Token : Token,
           DateCreated: Date("now"),
@@ -110,13 +114,12 @@ app.post("/api/register", async (req, res) => {
         };
 
         var sql =
-          "INSERT INTO Users (Login,Phome , Email, Password, Token, DateCreated, Name , Surname, SysLevel) VALUES (?,?,?,?,?,?,?,?,?)";
+          "INSERT INTO Users (Login, Email,Phone,  Password, Token, DateCreated, Name , Surname, SysLevel) VALUES (?,?,?,?,?,?,?,?,?)";
         var params = [
           data.Login,
-          data,Phome,
           data.Email,
+          data.Phone,
           data.Password,
-
           data.Token,
           Date("now"),
           data.Name,
@@ -162,8 +165,16 @@ app.post("/api/login", async (req, res) => {
       Login,
       Password
     ]
-  
-       var data = [ Date("now") , Login,Password];
+    var date = new Date();
+    const loginTime = {
+      day : date.getDay(),
+      hour : date.getHours(),
+      minute : date.getMinutes(),
+      month : date.getMonth(),
+      year : date.getFullYear(),
+      second :date.getSeconds()
+    }
+       var data = [ JSON.stringify( loginTime) , Login,Password];
 
         let sql = `UPDATE Users SET 
                  
