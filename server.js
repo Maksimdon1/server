@@ -167,7 +167,7 @@ app.post("/api/login", async (req, res) => {
     ]
    
    
-       var data = [new Date("now") , Login,Password];
+       var data = [new Date() , Login,Password];
 
         let sql = `UPDATE Users SET 
                  
