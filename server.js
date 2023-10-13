@@ -167,12 +167,11 @@ app.post("/api/login", async (req, res) => {
     ]
    
    
-       var data = [new Date() , Login,Password];
+       var data = [Date("now"), Login,Password];
 
         let sql = `UPDATE Users SET 
                  
-        DateLoggedIn = ?
-                  WHERE Login = ? AND Password = ?`;
+        DateLoggedIn = ? WHERE Login = ? AND Password = ?`;
         db.run(sql, data, function (err) {
           if (err) {
             return console.error(err.message);
