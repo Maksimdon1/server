@@ -153,9 +153,9 @@ app.post("/api/register", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
   try {
-    const { Login, Password } = req.body;
+    const { Login, Password, Email } = req.body;
     // Make sure there is an Email and Password in the request
-    if (!(Login && Password)) {
+    if (!(Login && Password && Email)) {
       res.status(400).send("All input is required");
     }
 
@@ -163,15 +163,16 @@ app.post("/api/login", async (req, res) => {
 
     let params = [
       Login,
-      Password
+      Password, 
+      Email
     ]
    
    
-       var data = [Date("now"), Login,Password];
+       var data = [Date("now"), Login,Password, Email];
 
         let sql = `UPDATE Users SET 
                  
-        DateLoggedIn = ? WHERE Login = ? AND Password = ?`;
+        DateLoggedIn = ? WHERE Login = ? AND Password = ? AND Email =?`;
         db.run(sql, data, function (err) {
           if (err) {
             return console.error(err.message);
@@ -182,7 +183,7 @@ app.post("/api/login", async (req, res) => {
      
         });
     
-    var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
+    var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ? AND Email =?";
     db.all(sqls, params, function (err, rows) {
       if (err) {
         res.status(400).json({ error: err.message });
