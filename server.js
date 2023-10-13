@@ -165,16 +165,9 @@ app.post("/api/login", async (req, res) => {
       Login,
       Password
     ]
-    var date = new Date();
-    const loginTime = {
-      day : date.getDay(),
-      hour : date.getHours(),
-      minute : date.getMinutes(),
-      month : date.getMonth(),
-      year : date.getFullYear(),
-      second :date.getSeconds()
-    }
-       var data = [ JSON.stringify( loginTime) , Login,Password];
+   
+   
+       var data = [new Date("now") , Login,Password];
 
         let sql = `UPDATE Users SET 
                  
