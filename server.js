@@ -643,6 +643,45 @@ app.post("/api/house", async (req, res) => {
     console.log(err);
   }
 });
+app.get("/api/house/:id", async (req, res) => {
+  var errors = [];
+  var data = {};
+  try {
+   
+    if (errors.length) {
+      res.status(400).json({ error: errors.join(",") });
+      return;
+    }
+    let userExists = false;
+
+    var sql = "SELECT * FROM House WHERE Id = ?";
+        data = [
+          req.params.id
+ 
+        ]
+    await db.all(sql, data, (err, result) => {
+      if (err) {
+        res.status(402).json({ error: err.message });
+        return;
+      }
+      else{
+        res.status(201).send(result);
+      }
+
+      
+    });
+
+    // setTimeout(() => {
+    //   if (!userExists) {
+    //     res.status(201).send(data);
+    //   } else {
+    //     res.status(201).json("Record already exists. Please login");
+    //   }
+    // }, 500);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 
 
