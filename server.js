@@ -53,7 +53,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 // db.run(
 //   `CREATE TABLE House (
 //         Id INTEGER PRIMARY KEY AUTOINCREMENT,
-//         State TEXT, 
+//         State Boolean , 
        
 //         DateLoggedIn DATE
       
@@ -71,11 +71,11 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 //     }
 //   }
 // );
-// var insert =
-// `INSERT INTO House ( 'State', 'DateLoggedIn') VALUES (? ,?)`;
-// const data =[ '1', Date("now")]
-// db.run(insert, data);
-// module.exports = db;
+var insert =
+`INSERT INTO House ( 'State', 'DateLoggedIn') VALUES (? ,?)`;
+const data =[ false, Date("now")]
+db.run(insert, data);
+module.exports = db;
 
 app.use(
 
