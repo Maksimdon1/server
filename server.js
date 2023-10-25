@@ -665,7 +665,7 @@ app.get("/api/house/:id", async (req, res) => {
         return;
       }
       else{
-        res.status(201).send(result);
+        res.status(200).send(result);
       }
 
       
