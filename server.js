@@ -607,8 +607,9 @@ app.post("/api/house", async (req, res) => {
       res.status(400).json({ error: errors.join(",") });
       return;
     }
+    let userExists = false;
     if(State){
-      let userExists = false;
+
 
       let sql = `UPDATE House SET 
                    
@@ -635,7 +636,7 @@ app.post("/api/house", async (req, res) => {
       });
     }
     if(frequency){
-      let userExists = false;
+
 
       let sql = `UPDATE House SET 
                    
