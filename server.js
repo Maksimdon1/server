@@ -55,7 +55,8 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 //         Id INTEGER PRIMARY KEY AUTOINCREMENT,
 //         State Boolean , 
        
-//         DateLoggedIn DATE
+//         DateLoggedIn DATE,
+            // frequency INTEGER
       
         
 
@@ -594,7 +595,7 @@ app.post("/api/house", async (req, res) => {
   var errors = [];
   var data = {};
   try {
-    const { Id, State} = req.body;
+    const { Id, State, frequency} = req.body;
 
     if (!Id) {
       errors.push("Login is missing");
@@ -606,31 +607,61 @@ app.post("/api/house", async (req, res) => {
       res.status(400).json({ error: errors.join(",") });
       return;
     }
-    let userExists = false;
+    if(State){
+      let userExists = false;
 
-    let sql = `UPDATE House SET 
-                 
-        DateLoggedIn = ? , State = ? WHERE Id = 1`;
-        data = {
-          Date:  Date("now"),
-      
-          State: State,
-      
-          Id:Id,
- 
-         };
-         const sqlArr = [data['Date'], data['State']];
-    await db.all(sql, sqlArr, (err, result) => {
-      if (err) {
-        res.status(402).json({ error: err.message });
-        return;
-      }
-      else{
-        console.log(result)
-      }
+      let sql = `UPDATE House SET 
+                   
+          DateLoggedIn = ? , State = ? WHERE Id = 1`;
+          data = {
+            Date:  Date("now"),
+        
+            State: State,
+        
+            Id:Id,
+   
+           };
+           const sqlArr = [data['Date'], data['State']];
+      await db.all(sql, sqlArr, (err, result) => {
+        if (err) {
+          res.status(402).json({ error: err.message });
+          return;
+        }
+        else{
+          console.log(result)
+        }
+  
+        
+      });
+    }
+    if(frequency){
+      let userExists = false;
 
-      
-    });
+      let sql = `UPDATE House SET 
+                   
+          DateLoggedIn = ? , frequency  = ? WHERE Id = 1`;
+          data = {
+            Date:  Date("now"),
+        
+            frequency: frequency,
+        
+            Id:Id,
+   
+           };
+           const sqlArr = [data['Date'], data['frequency']];
+      await db.all(sql, sqlArr, (err, result) => {
+        if (err) {
+          res.status(402).json({ error: err.message });
+          return;
+        }
+        else{
+          console.log(result)
+        }
+  
+        
+      });
+    }
+
 
     setTimeout(() => {
       if (!userExists) {

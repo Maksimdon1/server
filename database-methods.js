@@ -13,8 +13,8 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 
 function add_column() {
   db.run(
-    ` ALTER TABLE Users
-    ADD AdminLink text `,
+    ` ALTER TABLE House
+    ADD frequency INTEGER `,
     (err) => {
       if (err) {
         console.log(err);
@@ -22,7 +22,7 @@ function add_column() {
     }
   );
 }
-
+add_column()
 
 function print_users() {
   var sql = "SELECT * FROM Devices";
@@ -317,5 +317,5 @@ function deletes(){
 
 }
 //create_table_Entrance()
-add_Entrance()
+add_column()
 
