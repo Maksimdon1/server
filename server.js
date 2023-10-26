@@ -600,9 +600,7 @@ app.post("/api/house", async (req, res) => {
     if (!Id) {
       errors.push("Login is missing");
     }
-    if (!State) {
-      errors.push("Login is missing");
-    }
+    
     if (errors.length) {
       res.status(400).json({ error: errors.join(",") });
       return;
