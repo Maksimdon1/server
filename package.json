@@ -19,6 +19,7 @@
     "md5": "^2.3.0",
     "netlify-cli": "^12.7.2",
     "netlify-lambda": "^2.0.15",
+    "nodemailer": "^6.9.7",
     "sqlite3": "^5.1.6"
   }
 }
