@@ -29,7 +29,8 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             Token text,
             SysLevel  INTEGER,
             DateLoggedIn DATE,
-            DateCreated DATE
+            DateCreated DATE,
+            Bonuses INTEGER
             
 
             )`,

@@ -13,8 +13,8 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 
 function add_column() {
   db.run(
-    ` ALTER TABLE House
-    ADD frequency INTEGER `,
+    ` ALTER TABLE Users
+    ADD Bonuses INTEGER `,
     (err) => {
       if (err) {
         console.log(err);
