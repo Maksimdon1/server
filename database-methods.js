@@ -14,7 +14,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 function add_column() {
   db.run(
     ` ALTER TABLE Users
-    ADD Bonuses INTEGER `,
+    ADD ActivationLink text `,
     (err) => {
       if (err) {
         console.log(err);
@@ -22,7 +22,6 @@ function add_column() {
     }
   );
 }
-add_column()
 
 function print_users() {
   var sql = "SELECT * FROM Devices";
@@ -147,21 +146,24 @@ function add_user(name) {
 }
 
 function DELETE(id) {
-  db.run("DELETE FROM UserImages WHERE Id = ?", id, function (err, result) {
+ 
+
+  // DELETE PARENT RECORD
+  db.run("DELETE FROM Users WHERE login = ?", id, function (err, result) {
     if (err) {
-      console.log(err);
+      res.status(400).json({ error: res.message });
       return;
     }
   });
-
-  // DELETE PARENT RECORD
-  db.run("DELETE FROM Users WHERE id = ?", id, function (err, result) {
+  db.run("DELETE FROM Tokens WHERE UserId = ?", id, function (err, result) {
     if (err) {
       res.status(400).json({ error: res.message });
       return;
     }
   });
 }
+
+DELETE('')
 
 function change(name, id) {
   var data = [name, Date("now"), id];
@@ -226,14 +228,9 @@ function write() {
 
 function create_table_Entrance() {
   db.run(
-    `CREATE TABLE Entrance (
-    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    State Boolean,
-    Repair Boolean,                  
-    DateCreated DATE,
-    Adress text NOT NULL,
-    FOREIGN KEY (Adress)
-    REFERENCES Houses (Adress)
+    `CREATE TABLE Tokens (
+    UserId INTEGER ,
+    RefreshToken text  NOT NULL 
     )`,
     (err) => {
       if (err) {
@@ -249,7 +246,7 @@ function create_table_Houses() {
   db.run(
     `CREATE TABLE Houses (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Adress text NOT NULL,
+    Adress text,
     EntranceVal INTEGER
     
     )`,
@@ -317,5 +314,3 @@ function deletes(){
 
 }
 //create_table_Entrance()
-add_column()
-

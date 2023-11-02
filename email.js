@@ -14,12 +14,12 @@ app.listen(port, () => {
 
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.forwardemail.net",
-    port: 465,
-    secure: true,
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
         user: 'flowerloverhops@gmail.com',
-        pass: 'flower-lover-shop'
+        pass: 'ofok vnyn migo prpi'
       }
   });
   
@@ -27,8 +27,8 @@ const transporter = nodemailer.createTransport({
   async function main() {
     // send mail with defined transport object
     const info = await transporter.sendMail({
-      from: '"Fred Foo 👻" <foo@example.com>', // sender address
-      to: "bar@example.com, baz@example.com", // list of receivers
+      from: 'flowerloverhops@gmail.com', // sender address
+      to: "bytedreames@gmail.com", // list of receivers
       subject: "Hello ✔", // Subject line
       text: "Hello world?", // plain text body
       html: "<b>Hello world?</b>", // html body
