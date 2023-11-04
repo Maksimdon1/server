@@ -155,7 +155,7 @@ class UserService{
 
 
     async refresh(refreshToken) {
- 
+
       
         if (!refreshToken) {
             throw ApiError.UnauthorizedError();
@@ -210,7 +210,7 @@ class UserService{
         const user = await findUserByEmail(email)
         if(!user.SysLevel){
 
-            await mailService.sendActivationMail(email, `${process.env.API_URL}/server/api/activate/${Addresult.ActivationLink}`)
+        await mailService.sendActivationMail(email, `${process.env.API_URL}/server/api/activate/${user.ActivationLink}`)
         return user
         }
         else{

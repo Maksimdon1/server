@@ -31,6 +31,7 @@ class MailService{
             `
 
         })
+
         if(info){
             result = 1
         }
