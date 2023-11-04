@@ -210,7 +210,7 @@ class UserService{
         const user = await findUserByEmail(email)
         if(!user.SysLevel){
 
-        await mailService.sendActivationMail(email, `${process.env.API_URL}/server/api/activate/${user.ActivationLink}`)
+            await mailService.sendActivationMail(email, `${process.env.API_URL}/server/api/activate/${Addresult.ActivationLink}`)
         return user
         }
         else{
