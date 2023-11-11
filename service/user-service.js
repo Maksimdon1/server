@@ -162,6 +162,7 @@ class UserService{
         }
 
         const userData = TokenService.validateRefreshToken(refreshToken);
+        
       
 
         const tokenFromDb = await TokenService.findToken(refreshToken);
@@ -219,7 +220,18 @@ class UserService{
 
     }
 
+
+
+    async AddToCart(UserId, ) {
+
+        return await AllUsers()
+    
+    
+    }
+    
+
 }
+
 
 module.exports = new UserService();
 

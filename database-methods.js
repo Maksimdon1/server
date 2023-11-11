@@ -228,9 +228,21 @@ function write() {
 
 function create_table_Entrance() {
   db.run(
-    `CREATE TABLE Tokens (
-    UserId INTEGER ,
-    RefreshToken text  NOT NULL 
+    `CREATE TABLE Cart (
+      UserId INTEGER ,
+      Id INTEGER PRIMARY KEY AUTOINCREMENT ,
+      Price  INTEGER, 
+      Packing text,
+      Wrapper text,
+      FlowerLenght INTEGER,
+      ItemsLenght INTEGER,
+
+
+
+      Lenght INTEGER,
+      ProductLink text
+      
+   
     )`,
     (err) => {
       if (err) {
@@ -313,4 +325,4 @@ function deletes(){
   );
 
 }
-//create_table_Entrance()
+create_table_Entrance()
