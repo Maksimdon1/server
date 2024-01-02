@@ -325,4 +325,3 @@ function deletes(){
   );
 
 }
-create_table_Entrance()

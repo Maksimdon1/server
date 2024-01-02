@@ -6,31 +6,32 @@ var md5 = require("md5");
 var sqlite3 = require("sqlite3").verbose();
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
-const errorMiddleware = require("./middlewares/error-middleware")
-const router = require("./router/index")
-const cookieParser = require('cookie-parser')
-
-
+const errorMiddleware = require("./middlewares/error-middleware");
+const router = require("./router/index");
+const cookieParser = require("cookie-parser");
 
 const DBSOURCE = "shop.sqlite";
 
-
-app.use(express.urlencoded({limit: '50mb', extended: true}));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.urlencoded());
-app.use( cors({
-  credentials: true,
-  'origin': ["http://localhost:3001", "http://192.168.56.1:3001/","http://localhost:3000", "https://flower-lover.netlify.app",'http://192.168.1.3:3000', 'http://192.168.1.2:3000/' , 'https://sneakers-shop-ru.netlify.app']
-}))
-app.use(express.json())
+app.use(
+  cors({
+    credentials: true,
+    origin: [
+      "http://localhost:3001",
+      "http://192.168.56.1:3001/",
+      "http://localhost:3000",
+      "https://flower-lover.netlify.app",
+      "http://192.168.1.3:3000",
+      "http://192.168.1.2:3000/",
+      "https://sneakers-shop-ru.netlify.app",
+    ],
+  })
+);
+app.use(express.json());
 app.use(cookieParser());
-app.use('/server/api', router)
-app.use(errorMiddleware)
-
-
-
-
-
-
+app.use("/server/api", router);
+app.use(errorMiddleware);
 
 // let db = new sqlite3.Database(DBSOURCE, (err) => {
 //   if (err) {
@@ -43,10 +44,10 @@ app.use(errorMiddleware)
 //     db.run(
 //       `CREATE TABLE Users (
 //             Id INTEGER PRIMARY KEY AUTOINCREMENT,
-//             Login text, 
-//             Email text, 
+//             Login text,
+//             Email text,
 //             Phone text,
-//             Password text,             
+//             Password text,
 //             Name text,
 //             Surname text,
 //             Token text,
@@ -54,7 +55,6 @@ app.use(errorMiddleware)
 //             DateLoggedIn DATE,
 //             DateCreated DATE,
 //             Bonuses INTEGER
-            
 
 //             )`,
 //       (err) => {
@@ -64,7 +64,7 @@ app.use(errorMiddleware)
 //           // Table just created, creating some rows
 //           var insert =
 //             "INSERT INTO Users (Login, Email, Password, Salt, DateCreated) VALUES (?,?,?,?,?)";
-         
+
 //         }
 //       }
 //     );
@@ -72,17 +72,13 @@ app.use(errorMiddleware)
 //   }
 // });
 
-
-
 // // db.run(
 // //   `CREATE TABLE House (
 // //         Id INTEGER PRIMARY KEY AUTOINCREMENT,
-// //         State Boolean , 
-       
+// //         State Boolean ,
+
 // //         DateLoggedIn DATE,
 //             // frequency INTEGER
-      
-        
 
 // //         )`,
 // //   (err) => {
@@ -91,8 +87,7 @@ app.use(errorMiddleware)
 // //       console.log(err)
 // //     } else {
 // //       // Table just created, creating some rows
-    
-     
+
 // //     }
 // //   }
 // // );
@@ -101,8 +96,6 @@ app.use(errorMiddleware)
 // const data =[ false, Date("now")]
 // db.run(insert, data);
 // module.exports = db;
-
-
 
 // app.post("/api/register", async (req, res) => {
 //   var errors = [];
@@ -142,10 +135,9 @@ app.use(errorMiddleware)
 //       }
 
 //       if (result.length === 0) {
-        
 
 //         data = {
-          
+
 //           Login: Login,
 //           Email: Email,
 //           Phone: Phone,
@@ -194,7 +186,6 @@ app.use(errorMiddleware)
 //   }
 // });
 
-
 // app.post("/api/login", async (req, res) => {
 //   try {
 //     const { Login, Password } = req.body;
@@ -207,26 +198,23 @@ app.use(errorMiddleware)
 
 //     let params = [
 //       Login,
-//       Password, 
+//       Password,
 
 //     ]
-   
-   
+
 //        var data = [Date("now"), Login,Password,];
 
-//         let sql = `UPDATE Users SET 
-                 
+//         let sql = `UPDATE Users SET
+
 //         DateLoggedIn = ? WHERE Login = ? AND Password = ? `;
 //         db.run(sql, data, function (err) {
 //           if (err) {
 //             return console.error(err.message);
 //           }
 //           console.log(`Row(s) updated: ${this.changes}`);
-          
-      
-     
+
 //         });
-    
+
 //     var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ? ";
 //     db.all(sqls, params, function (err, rows) {
 //       if (err) {
@@ -234,11 +222,10 @@ app.use(errorMiddleware)
 //         return;
 //       }
 //       else{
-     
+
 //          res.status(200).send(rows);
 //       }
 
-     
 //     });
 //   } catch (err) {
 //     console.log(err);
@@ -270,8 +257,8 @@ app.use(errorMiddleware)
 //     }
 //     var data = [ JSON.stringify( loginTime) , Login,Password];
 
-//         let sql = `UPDATE Users SET 
-                 
+//         let sql = `UPDATE Users SET
+
 //         DateLoggedIn = ?
 //                   WHERE Login = ? AND Password = ?`;
 //         db.run(sql, data, function (err) {
@@ -279,11 +266,9 @@ app.use(errorMiddleware)
 //             return console.error(err.message);
 //           }
 //           console.log(`Row(s) updated: ${this.changes}`);
-          
-      
-     
+
 //         });
-    
+
 //     var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
 //     db.all(sqls, params, function (err, rows) {
 //       if (err) {
@@ -296,19 +281,16 @@ app.use(errorMiddleware)
 //           db.all(sql, true, function (err, rows) {
 //             res.status(200).send(rows);
 //           })
-          
+
 //         }
-     
-         
+
 //       }
 
-     
 //     });
 //   } catch (err) {
 //     console.log(err);
 //   }
 // });
-
 
 // app.post("/get-all-entrance", async (req, res) => {
 //   try {
@@ -335,8 +317,8 @@ app.use(errorMiddleware)
 //     }
 //     var data = [ JSON.stringify( loginTime) , Login,Password];
 
-//         let sql = `UPDATE Users SET 
-                 
+//         let sql = `UPDATE Users SET
+
 //         DateLoggedIn = ?
 //                   WHERE Login = ? AND Password = ?`;
 //         db.run(sql, data, function (err) {
@@ -344,11 +326,9 @@ app.use(errorMiddleware)
 //             return console.error(err.message);
 //           }
 //           console.log(`Row(s) updated: ${this.changes}`);
-          
-      
-     
+
 //         });
-    
+
 //     var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
 //     db.all(sqls, params, function (err, rows) {
 //       if (err) {
@@ -361,13 +341,11 @@ app.use(errorMiddleware)
 //           db.all(sql,  function (err, rows) {
 //             res.status(200).send(rows);
 //           })
-          
+
 //         }
-     
-         
+
 //       }
 
-     
 //     });
 //   } catch (err) {
 //     console.log(err);
@@ -383,7 +361,7 @@ app.use(errorMiddleware)
 //     }
 //     console.log( EntranceId, EntranceState)
 //       let user = [];
-  
+
 //       let params = [
 //         Login,
 //         Password
@@ -398,9 +376,9 @@ app.use(errorMiddleware)
 //         second :date.getSeconds()
 //       }
 //       var data = [ JSON.stringify( loginTime) , Login,Password];
-  
-//           let sql = `UPDATE Users SET 
-                   
+
+//           let sql = `UPDATE Users SET
+
 //           DateLoggedIn = ?
 //                     WHERE Login = ? AND Password = ?`;
 //           db.run(sql, data, function (err) {
@@ -408,11 +386,9 @@ app.use(errorMiddleware)
 //               return console.error(err.message);
 //             }
 //             console.log(`Row(s) updated: ${this.changes}`);
-            
-        
-       
+
 //           });
-      
+
 //       var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
 //       db.all(sqls, params, function (err, rows) {
 //         if (err) {
@@ -420,8 +396,7 @@ app.use(errorMiddleware)
 //           return;
 //         }
 //         else{
-         
-           
+
 //             var sql = "UPDATE Entrance SET Repair = ? WHERE Id = ?";
 //             db.all(sql, EntranceState, EntranceId, function (err, rows) {
 //               res.status(200).send(rows);
@@ -430,13 +405,9 @@ app.use(errorMiddleware)
 //                 return;
 //               }
 //             })
-            
-          
-       
-           
+
 //         }
-  
-       
+
 //       });
 //     } catch (err) {
 //       console.log(err);
@@ -452,7 +423,7 @@ app.use(errorMiddleware)
 //       }
 //       console.log( EntranceId, EntranceState)
 //         let user = [];
-    
+
 //         let params = [
 //           Login,
 //           Password
@@ -467,9 +438,9 @@ app.use(errorMiddleware)
 //           second :date.getSeconds()
 //         }
 //         var data = [ JSON.stringify( loginTime) , Login,Password];
-    
-//             let sql = `UPDATE Users SET 
-                     
+
+//             let sql = `UPDATE Users SET
+
 //             DateLoggedIn = ?
 //                       WHERE Login = ? AND Password = ?`;
 //             db.run(sql, data, function (err) {
@@ -477,11 +448,9 @@ app.use(errorMiddleware)
 //                 return console.error(err.message);
 //               }
 //               console.log(`Row(s) updated: ${this.changes}`);
-              
-          
-         
+
 //             });
-        
+
 //         var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
 //         db.all(sqls, params, function (err, rows) {
 //           if (err) {
@@ -489,8 +458,7 @@ app.use(errorMiddleware)
 //             return;
 //           }
 //           else{
-           
-             
+
 //               var sql = "UPDATE Entrance SET State = ? WHERE Id = ?";
 //               db.all(sql, EntranceState, EntranceId, function (err, rows) {
 //                 res.status(200).send(rows);
@@ -499,13 +467,9 @@ app.use(errorMiddleware)
 //                   return;
 //                 }
 //               })
-              
-            
-         
-             
+
 //           }
-    
-         
+
 //         });
 //       } catch (err) {
 //         console.log(err);
@@ -520,7 +484,7 @@ app.use(errorMiddleware)
 //     }
 //     console.log( EntranceId, EntranceState)
 //       let user = [];
-  
+
 //       let params = [
 //         Login,
 //         Password
@@ -535,9 +499,9 @@ app.use(errorMiddleware)
 //         second :date.getSeconds()
 //       }
 //       var data = [ JSON.stringify( loginTime) , Login,Password];
-  
-//           let sql = `UPDATE Users SET 
-                   
+
+//           let sql = `UPDATE Users SET
+
 //           DateLoggedIn = ?
 //                     WHERE Login = ? AND Password = ?`;
 //           db.run(sql, data, function (err) {
@@ -545,11 +509,9 @@ app.use(errorMiddleware)
 //               return console.error(err.message);
 //             }
 //             console.log(`Row(s) updated: ${this.changes}`);
-            
-        
-       
+
 //           });
-      
+
 //       var sqls = "SELECT * FROM Users WHERE Login = ? AND Password = ?";
 //       db.all(sqls, params, function (err, rows) {
 //         if (err) {
@@ -557,8 +519,7 @@ app.use(errorMiddleware)
 //           return;
 //         }
 //         else{
-         
-           
+
 //             var sql = "UPDATE Entrance SET State = ? WHERE Id = ?";
 //             db.all(sql, EntranceState, EntranceId, function (err, rows) {
 //               res.status(200).send(rows);
@@ -567,26 +528,21 @@ app.use(errorMiddleware)
 //                 return;
 //               }
 //             })
-            
-          
-       
-           
+
 //         }
-  
-       
+
 //       });
 //     } catch (err) {
 //       console.log(err);
 //     }
 // });
 
-
 // app.get("/all", async (req, res) => {
 //   var sql = "SELECT * FROM Users";
 //    db.all(sql, (err, result) => {
 //     if (err) {
 //       res.status(402).json({ error: err.message });
-      
+
 //       return;
 //     }
 //     else{
@@ -596,15 +552,7 @@ app.use(errorMiddleware)
 
 // })
 
-
 // });
-
-
-
-
-
-
-
 
 // app.post("/api/house", async (req, res) => {
 //   var errors = [];
@@ -615,7 +563,7 @@ app.use(errorMiddleware)
 //     if (!Id) {
 //       errors.push("Login is missing");
 //     }
-    
+
 //     if (errors.length) {
 //       res.status(400).json({ error: errors.join(",") });
 //       return;
@@ -623,17 +571,16 @@ app.use(errorMiddleware)
 //     let userExists = false;
 //     if(State){
 
+//       let sql = `UPDATE House SET
 
-//       let sql = `UPDATE House SET 
-                   
 //           DateLoggedIn = ? , State = ? WHERE Id = 1`;
 //           data = {
 //             Date:  Date("now"),
-        
+
 //             State: State,
-        
+
 //             Id:Id,
-   
+
 //            };
 //            const sqlArr = [data['Date'], data['State']];
 //       await db.all(sql, sqlArr, (err, result) => {
@@ -644,23 +591,21 @@ app.use(errorMiddleware)
 //         else{
 //           console.log(result)
 //         }
-  
-        
+
 //       });
 //     }
 //     if(frequency){
 
+//       let sql = `UPDATE House SET
 
-//       let sql = `UPDATE House SET 
-                   
 //           DateLoggedIn = ? , frequency  = ? WHERE Id = 1`;
 //           data = {
 //             Date:  Date("now"),
-        
+
 //             frequency: frequency,
-        
+
 //             Id:Id,
-   
+
 //            };
 //            const sqlArr = [data['Date'], data['frequency']];
 //       await db.all(sql, sqlArr, (err, result) => {
@@ -671,11 +616,9 @@ app.use(errorMiddleware)
 //         else{
 //           console.log(result)
 //         }
-  
-        
+
 //       });
 //     }
-
 
 //     setTimeout(() => {
 //       if (!userExists) {
@@ -692,7 +635,7 @@ app.use(errorMiddleware)
 //   var errors = [];
 //   var data = {};
 //   try {
-   
+
 //     if (errors.length) {
 //       res.status(400).json({ error: errors.join(",") });
 //       return;
@@ -702,7 +645,7 @@ app.use(errorMiddleware)
 //     var sql = "SELECT * FROM House WHERE Id = ?";
 //         data = [
 //           req.params.id
- 
+
 //         ]
 //     await db.all(sql, data, (err, result) => {
 //       if (err) {
@@ -713,7 +656,6 @@ app.use(errorMiddleware)
 //         res.status(200).send(result);
 //       }
 
-      
 //     });
 
 //     // setTimeout(() => {
@@ -727,9 +669,6 @@ app.use(errorMiddleware)
 //     console.log(err);
 //   }
 // });
-
-
-
 
 app.listen(port, "0.0.0.0", () =>
   console.log(`API listening on port ${port}!`)

@@ -7,13 +7,15 @@ class UserController{
     async registration(req, res, next){
     
         try {
+            console.log(req.body)
              const errors = validationResult(req);
+             console.log(errors)
             if (!errors.isEmpty()) {
                 return next(ApiError.BadRequest('Ошибка при валидации', errors.array()))
             }
-            const {email, password, bonuses, login, phone, name, lastname, syslevel} = req.body;
+            const {email, password, name, lastname } = req.body;
            
-            const userData = await userService.rigistration(email, password, bonuses, login, phone, name, lastname, syslevel)
+            const userData = await userService.rigistration(email, password, name, lastname)
            
            
             res.cookie('refreshToken', userData.refreshToken, {maxAge:30*24*60*60*1000, httpOnly: true})
@@ -23,6 +25,7 @@ class UserController{
      
             
         } catch (error) {
+            console.log(error)
             next(error)
             
         }
