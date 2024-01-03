@@ -23,6 +23,7 @@ app.use(
       "http://localhost:3000",
       "https://flower-lover.netlify.app",
       "http://192.168.1.3:3000",
+      "http://192.168.1.4:3000",
       "http://192.168.1.2:3000/",
       "https://sneakers-shop-ru.netlify.app",
     ],

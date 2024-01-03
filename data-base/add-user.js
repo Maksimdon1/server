@@ -28,6 +28,7 @@ async function addUser(email, password, name, lastname) {
     Lastname: lastname,
     Syslevel: 0,
     ActivationLink: activationLink,
+    Bonuses:0
   };
   const params = [
     list.Login,
@@ -39,16 +40,18 @@ async function addUser(email, password, name, lastname) {
     list.Name,
     list.Lastname,
     list.Syslevel,
+    list.Bonuses,
     list.ActivationLink,
   ];
 
   var sql =
-    "INSERT INTO Users (Login, Email, Phone,  Password, Token, DateCreated, Name , Surname, SysLevel, ActivationLink) VALUES (?,?,?,?,?,?,?,?,?,?) RETURNING * ";
+    "INSERT INTO Users (Login, Email, Phone,  Password, Token, DateCreated, Name , Surname, SysLevel,Bonuses , ActivationLink) VALUES (?,?,?,?,?,?,?,?,?,?,?) RETURNING * ";
 
   const example = () => {
     return new Promise((resolve, reject) => {
       db.all(sql, params, (err, row) => {
         if (err) {
+          console.log(err, 12321)
           reject("Error");
         } else {
           resolve(row);
