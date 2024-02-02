@@ -24,6 +24,7 @@
     "md5": "^2.3.0",
     "netlify-cli": "^12.7.2",
     "netlify-lambda": "^2.0.15",
+    "node": "^21.6.1",
     "nodemailer": "^6.9.7",
     "nodemon": "^3.0.1",
     "sqlite3": "^5.1.6",

@@ -56,11 +56,10 @@ function print() {
 
 function create_table() {
   db.run(
-    `CREATE TABLE Basket (
+    `CREATE TABLE Articles (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    UserId INTEGER, 
-    ProductId INTEGER,                  
-    DateCreated DATE
+    Title text, 
+    Code text
     )`,
     (err) => {
       if (err) {
@@ -69,7 +68,7 @@ function create_table() {
     }
   );
 }
-
+create_table();
 function add_img() {
   var isUserExists = true;
 
@@ -163,7 +162,7 @@ function DELETE(id) {
   });
 }
 
-DELETE('')
+// DELETE('')
 
 function change(name, id) {
   var data = [name, Date("now"), id];
