@@ -23,18 +23,26 @@ app.use(
 			"http://localhost:3000",
 			"https://flower-lover.netlify.app",
 			"http://192.168.1.3:3000",
-			"http://192.168.1.4:3000",
+			"http://192.168.1.6:3000",
 			"http://192.168.1.2:3000/",
 			"https://sneakers-shop-ru.netlify.app",
 			"https://sneaker-one.netlify.app/",
 			"https://sneaker-one.netlify.app/login",
 		],
+		methods: "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS",
 	})
 );
+
 app.use(express.json());
 app.use(cookieParser());
 app.use("/server/api", router);
 app.use(errorMiddleware);
+app.use((req, res, next) => {
+	req.append("Access-Control-Allow-Origin", ["*"]);
+	req.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+	req.append("Access-Control-Allow-Credentials", "Content-Type");
+	next();
+});
 
 // let db = new sqlite3.Database(DBSOURCE, (err) => {
 //   if (err) {
