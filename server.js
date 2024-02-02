@@ -38,7 +38,7 @@ app.use(cookieParser());
 app.use("/server/api", router);
 app.use(errorMiddleware);
 app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", ["*"]);
+	res.setHeader("Access-Control-Allow-Origin", ["https://sneaker-one.netlify.app/login", "http://localhost:3000"]);
 	res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 	res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
 	next();
