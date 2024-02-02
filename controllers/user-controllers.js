@@ -17,7 +17,7 @@ class UserController {
 			const userData = await userService.rigistration(email, password, name, lastname);
 
 			res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app/login");
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
 			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 			res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
 			return res.json(userData);
@@ -32,7 +32,7 @@ class UserController {
 			const userData = await userService.login(email, password);
 
 			res.cookie("refreshToken", userData.token.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app/login");
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
 			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 			res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
 			return res.json(userData);
@@ -45,7 +45,7 @@ class UserController {
 			const { refreshToken } = req.body;
 			const token = await userService.logout(refreshToken);
 			res.clearCookie("refreshToken");
-			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app/login");
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
 			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 			res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
 			return res.json(token);
@@ -57,7 +57,7 @@ class UserController {
 		try {
 			const activationLink = req.params.link;
 			await userService.activate(activationLink);
-			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app/login");
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
 			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 			res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
 			return res.redirect(process.env.SITE_URL);
@@ -72,7 +72,7 @@ class UserController {
 
 			const userData = await userService.refresh(refreshToken);
 			res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app/login");
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
 			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 			res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
 			return res.json(userData);
@@ -84,7 +84,7 @@ class UserController {
 	async getUsers(req, res, next) {
 		try {
 			const users = await userService.getAllUsers();
-			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app/login");
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
 			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 			res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
 			return res.json(users);
@@ -96,7 +96,7 @@ class UserController {
 		try {
 			const { email } = req.body;
 			const userData = await userService.sendActivationMail(email);
-			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app/login");
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
 			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 			res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
 			return res.json(userData);
@@ -108,7 +108,7 @@ class UserController {
 		try {
 			const { id } = req.body;
 			const Article = await articleService.getArticle(id);
-			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app/login");
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
 			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 			res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
 			return res.json(Article);
