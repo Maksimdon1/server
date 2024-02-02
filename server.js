@@ -26,7 +26,7 @@ app.use(
       "http://192.168.1.4:3000",
       "http://192.168.1.2:3000/",
       "https://sneakers-shop-ru.netlify.app",
-      "https://sneaker-one.netlify.app/",
+      "https://sneaker-one.netlify.app",
     ],
   })
 );
