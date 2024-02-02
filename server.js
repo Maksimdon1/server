@@ -9,40 +9,36 @@ const bcrypt = require("bcryptjs");
 const errorMiddleware = require("./middlewares/error-middleware");
 const router = require("./router/index");
 const cookieParser = require("cookie-parser");
-
+const corsMiddleware = require("./middlewares/cors.middleware");
 const DBSOURCE = "shop.sqlite";
 
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.urlencoded());
-app.use(
-	cors({
-		credentials: true,
-		origin: [
-			"http://localhost:3001",
-			"http://192.168.56.1:3001/",
-			"http://localhost:3000",
-			"https://flower-lover.netlify.app",
-			"http://192.168.1.3:3000",
-			"http://192.168.1.6:3000",
-			"http://192.168.1.2:3000/",
-			"https://sneakers-shop-ru.netlify.app",
-			"https://sneaker-one.netlify.app/",
-			"https://sneaker-one.netlify.app/login",
-		],
-		methods: "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS",
-	})
-);
+app.use(corsMiddleware);
+// app.use(
+// 	cors({
+// 		credentials: true,
+// 		origin: [
+// 			"http://localhost:3001",
+// 			"http://192.168.56.1:3001/",
+// 			"http://localhost:3000",
+// 			"https://flower-lover.netlify.app",
+// 			"http://192.168.1.3:3000",
+// 			"http://192.168.1.6:3000",
+// 			"http://192.168.1.2:3000/",
+// 			"https://sneakers-shop-ru.netlify.app",
+// 			"https://sneaker-one.netlify.app/",
+// 			"https://sneaker-one.netlify.app/login",
+// 		],
+// 		methods: "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS",
+// 	})
+// );
 
 app.use(express.json());
 app.use(cookieParser());
 app.use("/server/api", router);
 app.use(errorMiddleware);
-app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", ["https://sneaker-one.netlify.app/login", "http://localhost:3000"]);
-	res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-	res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
-	next();
-});
+
 
 // let db = new sqlite3.Database(DBSOURCE, (err) => {
 //   if (err) {
