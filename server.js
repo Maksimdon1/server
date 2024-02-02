@@ -38,9 +38,9 @@ app.use(cookieParser());
 app.use("/server/api", router);
 app.use(errorMiddleware);
 app.use((req, res, next) => {
-	req.append("Access-Control-Allow-Origin", ["*"]);
-	req.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-	req.append("Access-Control-Allow-Credentials", "Content-Type");
+	res.setHeader("Access-Control-Allow-Origin", ["*"]);
+	res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+	res.setHeader("Access-Control-Allow-Credentials", "Content-Type");
 	next();
 });
 
