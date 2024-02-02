@@ -15,20 +15,21 @@ const DBSOURCE = "shop.sqlite";
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.urlencoded());
 app.use(
-  cors({
-    credentials: true,
-    origin: [
-      "http://localhost:3001",
-      "http://192.168.56.1:3001/",
-      "http://localhost:3000",
-      "https://flower-lover.netlify.app",
-      "http://192.168.1.3:3000",
-      "http://192.168.1.4:3000",
-      "http://192.168.1.2:3000/",
-      "https://sneakers-shop-ru.netlify.app",
-      "https://sneaker-one.netlify.app",
-    ],
-  })
+	cors({
+		credentials: true,
+		origin: [
+			"http://localhost:3001",
+			"http://192.168.56.1:3001/",
+			"http://localhost:3000",
+			"https://flower-lover.netlify.app",
+			"http://192.168.1.3:3000",
+			"http://192.168.1.4:3000",
+			"http://192.168.1.2:3000/",
+			"https://sneakers-shop-ru.netlify.app",
+			"https://sneaker-one.netlify.app/",
+			"https://sneaker-one.netlify.app/login",
+		],
+	})
 );
 app.use(express.json());
 app.use(cookieParser());
