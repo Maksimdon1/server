@@ -22,9 +22,9 @@ class UserController {
 			res.setHeader("Access-Control-Allow-Credentials", true);
 			return res.json(userData);
 		} catch (error) {
-            res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
-				res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-				res.setHeader("Access-Control-Allow-Credentials", true);
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
+			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+			res.setHeader("Access-Control-Allow-Credentials", true);
 			console.log(error);
 			next(error);
 		}
@@ -35,14 +35,14 @@ class UserController {
 			const userData = await userService.login(email, password);
 
 			res.cookie("refreshToken", userData.token.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
-res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-res.setHeader("Access-Control-Allow-Credentials", true);
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
+			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+			res.setHeader("Access-Control-Allow-Credentials", true);
 			return res.json(userData);
 		} catch (e) {
-            res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
-				res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-				res.setHeader("Access-Control-Allow-Credentials", true);
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
+			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+			res.setHeader("Access-Control-Allow-Credentials", true);
 			next(e);
 		}
 	}
@@ -51,9 +51,9 @@ res.setHeader("Access-Control-Allow-Credentials", true);
 			const { refreshToken } = req.body;
 			const token = await userService.logout(refreshToken);
 			res.clearCookie("refreshToken");
-res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
-res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-res.setHeader("Access-Control-Allow-Credentials", true);
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
+			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+			res.setHeader("Access-Control-Allow-Credentials", true);
 			return res.json(token);
 		} catch (e) {
 			next(e);
@@ -63,9 +63,9 @@ res.setHeader("Access-Control-Allow-Credentials", true);
 		try {
 			const activationLink = req.params.link;
 			await userService.activate(activationLink);
-res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
-res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-res.setHeader("Access-Control-Allow-Credentials", true);
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
+			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+			res.setHeader("Access-Control-Allow-Credentials", true);
 			return res.redirect(process.env.SITE_URL);
 		} catch (error) {
 			next(error);
@@ -78,9 +78,9 @@ res.setHeader("Access-Control-Allow-Credentials", true);
 
 			const userData = await userService.refresh(refreshToken);
 			res.cookie("refreshToken", userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
-res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-res.setHeader("Access-Control-Allow-Credentials", true);
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
+			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+			res.setHeader("Access-Control-Allow-Credentials", true);
 			return res.json(userData);
 		} catch (e) {
 			next(e);
@@ -90,9 +90,9 @@ res.setHeader("Access-Control-Allow-Credentials", true);
 	async getUsers(req, res, next) {
 		try {
 			const users = await userService.getAllUsers();
-res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
-res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-res.setHeader("Access-Control-Allow-Credentials", true);
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
+			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+			res.setHeader("Access-Control-Allow-Credentials", true);
 			return res.json(users);
 		} catch (e) {
 			next(e);
@@ -102,9 +102,9 @@ res.setHeader("Access-Control-Allow-Credentials", true);
 		try {
 			const { email } = req.body;
 			const userData = await userService.sendActivationMail(email);
-res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
-res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-res.setHeader("Access-Control-Allow-Credentials", true);
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
+			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+			res.setHeader("Access-Control-Allow-Credentials", true);
 			return res.json(userData);
 		} catch (e) {
 			next(e);
@@ -114,14 +114,14 @@ res.setHeader("Access-Control-Allow-Credentials", true);
 		try {
 			const { id } = req.body;
 			const Article = await articleService.getArticle(id);
-res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
-res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-res.setHeader("Access-Control-Allow-Credentials", true);
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
+			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+			res.setHeader("Access-Control-Allow-Credentials", true);
 			return res.json(Article);
 		} catch (e) {
-            res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
-				res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-				res.setHeader("Access-Control-Allow-Credentials", true);
+			res.setHeader("Access-Control-Allow-Origin", "https://sneaker-one.netlify.app");
+			res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+			res.setHeader("Access-Control-Allow-Credentials", true);
 			next(e);
 		}
 	}
