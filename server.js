@@ -2,19 +2,17 @@ const express = require("express");
 const app = express();
 require("dotenv").config();
 const port = process.env.PORT || 3002;
-var md5 = require("md5");
-var sqlite3 = require("sqlite3").verbose();
-const cors = require("cors");
-const bcrypt = require("bcryptjs");
 const errorMiddleware = require("./middlewares/error-middleware");
 const router = require("./router/index");
 const cookieParser = require("cookie-parser");
 const corsMiddleware = require("./middlewares/cors.middleware");
-const DBSOURCE = "shop.sqlite";
+const cors = require("cors");
+
 
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.urlencoded());
 app.use(corsMiddleware);
+app.use("/static",  express.static('../img'));
 // app.use(
 // 	cors({
 // 		credentials: true,

@@ -6,10 +6,11 @@ const { FindArticle } =  require( "../Articles/FindArticle");
 class ArticleService {
 	async getArticle(id) {
 
+
 		
 
-			let Article = await FindArticle(1);
-			console.log(Article, 1);
+			let Article = await FindArticle(id);
+			
 			
 
 			if (Article.state == false) {

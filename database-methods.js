@@ -13,16 +13,16 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 
 function add_column() {
   db.run(
-    ` ALTER TABLE Users
-    ADD ActivationLink text `,
-    (err) => {
-      if (err) {
-        console.log(err);
-      }
-    }
+		` ALTER TABLE Articles
+    ADD  DateCreated DATE `,
+		(err) => {
+			if (err) {
+				console.log(err);
+			}
+		}
   );
 }
-
+console.log(Date("now"));
 function print_users() {
   var sql = "SELECT * FROM Devices";
   db.all(sql,  (err, rows) => {
@@ -68,7 +68,7 @@ function create_table() {
     }
   );
 }
-create_table();
+
 function add_img() {
   var isUserExists = true;
 

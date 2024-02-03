@@ -10,6 +10,6 @@ router.get('/activate/:link', userController.activate);
 router.post('/refresh', userController.refresh);
 router.post('/sendActivationMail', userController.sendActivationMail);
 router.get('/users',  userController.getUsers);
-router.get("/get-article", userController.getArticles);
+router.post("/get-article", userController.getArticles);
 
 module.exports = router
