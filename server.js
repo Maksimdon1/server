@@ -12,7 +12,7 @@ const cors = require("cors");
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.urlencoded());
 app.use(corsMiddleware);
-app.use("/static",  express.static('../img'));
+app.use("/static",  express.static('./img'));
 // app.use(
 // 	cors({
 // 		credentials: true,
