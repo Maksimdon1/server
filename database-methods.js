@@ -13,8 +13,8 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 
 function add_column() {
   db.run(
-		` ALTER TABLE Articles
-    ADD  DateCreated DATE `,
+		` ALTER TABLE Users
+    ADD  Status text `,
 		(err) => {
 			if (err) {
 				console.log(err);
@@ -22,7 +22,8 @@ function add_column() {
 		}
   );
 }
-console.log(Date("now"));
+
+
 function print_users() {
   var sql = "SELECT * FROM Devices";
   db.all(sql,  (err, rows) => {
@@ -56,7 +57,7 @@ function print() {
 
 function create_table() {
   db.run(
-    `CREATE TABLE Articles (
+    `CREATE TABLE Money (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
     Title text, 
     Code text

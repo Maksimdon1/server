@@ -12,6 +12,7 @@ module.exports = class UserDto{
     DateCreated;
     Bonuses;
     ActivationLink;
+    Status;
    
     constructor(model){
         this.Id  = model.Id;
@@ -27,6 +28,7 @@ module.exports = class UserDto{
         this.DateCreated = model.DateCreated;
         this.Bonuses = model.Bonuses;
         this.ActivationLink = model.activationLink;
+        this.Status = model.Status;
        
     }
     
