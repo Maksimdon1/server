@@ -1,5 +1,5 @@
 function cors(req, res, next) {
-	console.log(req.get("origin"));
+	console.log(req.get("origin"), 'cors');
 
 	res.header("Access-Control-Allow-Origin", req.get("origin")); //https://sneaker-one.netlify.app
 	res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");

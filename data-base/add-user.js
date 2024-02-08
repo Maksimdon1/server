@@ -28,7 +28,8 @@ async function addUser(email, password, name, lastname) {
     Lastname: lastname,
     Syslevel: 0,
     ActivationLink: activationLink,
-    Bonuses:0
+    Bonuses:0,
+    Status :'User'
   };
   const params = [
     list.Login,
@@ -42,10 +43,11 @@ async function addUser(email, password, name, lastname) {
     list.Syslevel,
     list.Bonuses,
     list.ActivationLink,
+    list.Status
   ];
 
   var sql =
-    "INSERT INTO Users (Login, Email, Phone,  Password, Token, DateCreated, Name , Surname, SysLevel,Bonuses , ActivationLink) VALUES (?,?,?,?,?,?,?,?,?,?,?) RETURNING * ";
+    "INSERT INTO Users (Login, Email, Phone,  Password, Token, DateCreated, Name , Surname, SysLevel,Bonuses , ActivationLink, Status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) RETURNING * ";
 
   const example = () => {
     return new Promise((resolve, reject) => {
