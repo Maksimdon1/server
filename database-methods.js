@@ -57,10 +57,17 @@ function print() {
 
 function create_table() {
   db.run(
-    `CREATE TABLE Money (
+    `CREATE TABLE Payments (
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Title text, 
-    Code text
+    Name text, 
+    Value INTEGER,
+    DateCreated date ,
+    Type text
+    
+
+
+
+
     )`,
     (err) => {
       if (err) {
@@ -69,7 +76,7 @@ function create_table() {
     }
   );
 }
-
+create_table()
 function add_img() {
   var isUserExists = true;
 

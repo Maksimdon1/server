@@ -13,6 +13,7 @@ router.post('/sendActivationMail', userController.sendActivationMail);
 router.get('/users',  userController.getUsers);
 router.post("/get-article", userController.getArticles);
 router.post("/admin/update-to-admin", AdminController.UpdateToAdmin);
+router.post("/admin/get-payments", AdminController.GetPayments);
 
 
 module.exports = router

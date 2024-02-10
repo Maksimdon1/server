@@ -12,5 +12,15 @@ class AdminController {
 			next(e);
 		}
 	}
+	async GetPayments(req, res, next) {
+		try {
+		
+			const Result = await AdminService.Get_Payments();
+            
+			return res.json(Result);
+		} catch (e) {
+			next(e);
+		}
+	}
 }
 module.exports = new AdminController()
